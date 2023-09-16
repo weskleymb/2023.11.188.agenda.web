@@ -8,8 +8,8 @@
 <body>
     <h1>Bem vindo a Agenda Web</h1>
     <ul>
-        {% for contato_id, contato in contatos.items %}
-        <li>Nome: {{ contato.nome }}</li>
+        {% for contato in contatos %}
+        <li>Nome: {{ contato.nome }} | Fone: {{ contato.fone }}</li>
         {% endfor %}
     </ul>
 </body>

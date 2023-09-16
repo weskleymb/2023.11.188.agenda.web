@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+from apps.contato.models import Contato
+
 def index(requisicao):
 
     dados = {
@@ -13,5 +15,7 @@ def index(requisicao):
             "fone": "7777-5555"
         }
     }
+
+    dados = Contato.objects.all()
 
     return render(requisicao, 'home.html', {"contatos": dados})
