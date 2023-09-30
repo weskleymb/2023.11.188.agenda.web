@@ -1,21 +1,27 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
 from apps.contato.models import Contato
+from apps.contato.forms import ContatoForms
 
 def index(requisicao):
-
-    dados = {
-        1: {
-            "nome": "Chico",
-            "fone": "9999-8888"
-        },
-        2: {
-            "nome": "Zé",
-            "fone": "7777-5555"
-        }
-    }
-
     dados = Contato.objects.all()
+    return render(requisicao, 'index.html', {"contatos": dados})
 
-    return render(requisicao, 'home.html', {"contatos": dados})
+def form(requisicao):
+    
+    form = ContatoForms()
+
+    if requisicao.method == 'POST':
+        form = ContatoForms(requisicao.POST)
+
+        if form['nome'].value() != '' and form['fone'].value() != '':
+            nome_form = form['nome'].value()
+            fone_form = form['fone'].value()
+            
+            contato = Contato(nome=nome_form, fone=fone_form)
+            contato.save()
+
+            return redirect('index')
+
+    return render(requisicao, 'form.html', {"form": form})
