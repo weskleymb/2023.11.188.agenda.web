@@ -5,6 +5,12 @@ from apps.contato.models import Contato
 from apps.contato.forms import ContatoForms
 
 def index(requisicao):
+    usuario_logado = requisicao.user.is_authenticated
+
+    if not usuario_logado:
+        return redirect('login')
+
+
     dados = Contato.objects.all()
     return render(requisicao, 'index.html', {"contatos": dados})
 
